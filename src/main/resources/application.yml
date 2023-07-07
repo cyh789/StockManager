@@ -5,14 +5,14 @@ spring:
       ddl-auto: create
     show-sql: true
   datasource:
-    #    driver-class-name: com.mysql.cj.jdbc.Driver
-    #    url: jdbc:mysql://127.0.0.1:3306/stock_example
-    #    username: root
-    #    password: 1234
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:tcp://localhost/~/test
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/test1?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: sa
     password:
+#    driver-class-name: org.h2.Driver
+#    url: jdbc:h2:tcp://localhost/~/test
+#    username: sa
+#    password:
     hikari:
       maximum-pool-size: 40
 logging:
