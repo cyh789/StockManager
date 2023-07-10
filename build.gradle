@@ -27,6 +27,8 @@ dependencies {
 	testAnnotationProcessor 'org.projectlombok:lombok'
 	//redis 의존성 추가
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	//redisson 의존성 추가
+	implementation 'org.redisson:redisson-spring-boot-starter:3.22.1'
 	//P6Spy 의존성 추가
 	testImplementation "com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0"
 }
