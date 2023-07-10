@@ -13,13 +13,9 @@ public class PessimisticLockStockService {
 
     private final StockRepository stockRepository;
 
-    /**
-     * 재고 감소
-     */
     @Transactional(propagation = Propagation.REQUIRED)
     public void decrease(final Long id, final Long quantity) {
         Stock stock = stockRepository.findByIdWithPessimisticLock(id);
         stock.decrease(quantity);
-//        stockRepository.saveAndFlush(stock);
     }
 }

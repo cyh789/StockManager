@@ -8,10 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -25,8 +21,7 @@ class StockServiceTest {
 
     @BeforeEach
     void setUp() {
-        Stock stock = new Stock(1L, 100L);
-        stockRepository.saveAndFlush(stock);
+        stockRepository.saveAndFlush(new Stock(100L, 100L));
     }
 
     @AfterEach
@@ -37,35 +32,13 @@ class StockServiceTest {
     @Test
     void 재고를_감소한다() {
         //given
-        //when
-        stockService.decrease(1L, 1L);
-
-        //then
-        Stock stock = stockRepository.findById(1L).orElseThrow();
-        assertThat(stock.getQuantity()).isEqualTo(99L);
-    }
-
-    @Test
-    void 동시에_100건을_요청한다() throws InterruptedException {
-        //given
-        int threadCount = 100;
-        ExecutorService executorService = Executors.newFixedThreadPool(32);
-        CountDownLatch countDownLatch = new CountDownLatch(threadCount);
+        Stock stock = stockRepository.findByProductId(100L);
 
         //when
-        for (int i = 0; i < threadCount; i++) {
-            executorService.submit(() -> {
-                try {
-                    stockService.decrease(1L, 1L);
-                } finally {
-                    countDownLatch.countDown();
-                }
-            });
-        }
-        countDownLatch.await();
+        stockService.decrease(stock.getId(), 1L);
 
         //then
-        Stock stock = stockRepository.findById(1L).orElseThrow();
-        assertThat(stock.getQuantity()).isEqualTo(0L);
+        Stock result = stockRepository.findById(stock.getId()).orElseThrow();
+        assertThat(result.getQuantity()).isEqualTo(99L);
     }
 }

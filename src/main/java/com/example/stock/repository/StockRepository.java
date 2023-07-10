@@ -9,6 +9,9 @@ import org.springframework.data.repository.query.Param;
 
 public interface StockRepository extends JpaRepository<Stock, Long> {
 
+    @Query("SELECT s FROM Stock s WHERE s.productId = :productId")
+    Stock findByProductId(@Param("productId") final Long productId);
+
     @Lock(value = LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT s FROM Stock s WHERE s.id = :id")
     Stock findByIdWithPessimisticLock(@Param("id") final Long id);

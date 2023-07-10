@@ -1,8 +1,9 @@
-package com.example.stock.facade;
+package com.example.stock.service;
 
 import com.example.stock.domain.Stock;
 import com.example.stock.repository.StockRepository;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,38 +15,28 @@ import java.util.concurrent.Executors;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-class NamedLockStockFacadeTest {
+class SynchronizedStockServiceTest {
 
     @Autowired
-    private NamedLockStockFacade namedLockStockFacade;
+    private SynchronizedStockService synchronizedStockService;
 
     @Autowired
     private StockRepository stockRepository;
+
+    @BeforeEach
+    void setUp() {
+        stockRepository.saveAndFlush(new Stock(200L, 100L));
+    }
 
     @AfterEach
     void tearDown() {
         stockRepository.deleteAllInBatch();
     }
 
-//    @Test
-//    void NamedLock_재고를_감소한다() {
-//        //given
-//        stockRepository.saveAndFlush(new Stock(500L, 100L));
-//        Stock stock = stockRepository.findByProductId(500L);
-//
-//        //when
-//        namedLockStockFacade.decrease(stock.getId(), 1L);
-//
-//        //then
-//        Stock result = stockRepository.findById(stock.getId()).orElseThrow();
-//        assertThat(result.getQuantity()).isEqualTo(99L);
-//    }
-
     @Test
-    void NamedLock_동시에_100건을_요청한다() throws InterruptedException {
+    void synchronized_동시에_100건을_요청한다() throws InterruptedException {
         //given
-        stockRepository.saveAndFlush(new Stock(501L, 100L));
-        Stock stock = stockRepository.findByProductId(501L);
+        Stock stock = stockRepository.findByProductId(200L);
 
         int threadCount = 100;
         ExecutorService executorService = Executors.newFixedThreadPool(32);
@@ -55,7 +46,7 @@ class NamedLockStockFacadeTest {
         for (int i = 0; i < threadCount; i++) {
             executorService.submit(() -> {
                 try {
-                    namedLockStockFacade.decrease(stock.getId(), 1L);
+                    synchronizedStockService.decrease(stock.getId(), 1L);
                 } finally {
                     countDownLatch.countDown();
                 }
