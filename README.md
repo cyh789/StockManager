@@ -1,8 +1,10 @@
 # StockManager
-상품 재고 관리시스템
+상품 재고 관리시스템  
 
+</br>
+</br>
 
-## Commit Message Convention
+# Commit Message Convention
 ```
 type: Subject
 
@@ -31,5 +33,15 @@ REFACTOR: 프로덕션 코드 리팩터링
 TEST: 테스트 추가, 테스트 코드 리팩터링, 프로덕션 코드 변경 없음  
 CHORE: 빌드 테스크 업데이트, 패키지 매니저 환경설정, 프로덕션 코드 변경 없음  
 
+</br>
+</br>
+
+-------------
+
+# Redis
+
+### window10 환경에서 설치
+MS Open Tech 그룹에서 포팅한 Windows 용 Redis 는 3.0 버전을 마지막으로 더 이상 업데이트되지 않습니다.  
+그래서 https://github.com/tporadowski/redis 에서는 새로운 redis 를 Windows 에 지속적으로 포팅하고 있으니 Windows 에서 Redis 를 사용하려면 이 제품을 사용하는 것이 좋습니다.  
 
 
