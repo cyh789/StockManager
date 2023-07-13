@@ -40,25 +40,34 @@ CHORE: 빌드 테스크 업데이트, 패키지 매니저 환경설정, 프로�
 </br>
 </br>
 
--------------
 
 # Redis
 
 ### window10 환경에서 설치
+
+<details>
+<summary>접기/펼치기</summary>
+
 MS Open Tech 그룹에서 포팅한 Windows 용 Redis 는 3.0 버전을 마지막으로 더 이상 업데이트되지 않습니다.  
 그래서 https://github.com/tporadowski/redis 에서는 새로운 redis 를 Windows 에 지속적으로 포팅하고 있으니 Windows 에서 Redis 를 사용하려면 이 제품을 사용하는 것이 좋습니다.  
 
+</details>
 
 </br>
 </br>
 
--------------
 
 # 더 생각해보기
+
+</br>
 
 ### 1. save() 메서드를 명시적으로 호출 vs 호출하지 않음  
 
 #### 부제 : JPA Update(수정) 시 save() 메서드를 호출하는 것이 좋을까?  
+
+<details>
+<summary>접기/펼치기</summary>
+
 JPA를 사용하면 트랜잭션 범위 안에서 Dirty Checking이 동작한다.  
 따라서 save() 메서드를 호출하지 않아도 값이 알아서 수정되고 반영된다.  
 그렇다면 save() 메서드를 호출하는 것이랑 어떤 차이가 있는지 알아보자.  
@@ -100,12 +109,16 @@ Service 클래스에 대한 단위 테스트를 진행하기 위해서는 Reposi
 새로운 엔터티를 추가할 때는 repository.save() 메서드 사용을 해야 한다.  
 하지만, 기존의 엔터티를 수정하는 작업에서는 repository.save() 메서드를 사용하지 않는 것이 더 깔끔하다!  
 
-</br>
+</details>
 </br>
 
 -------------
 
 ### 2. save() vs saveAndFlush()
+
+<details>
+<summary>접기/펼치기</summary>
+
 save() 메소드를 사용하게 된다면 데이터베이스에 바로 flush 가 되는것이 아니기 때문에,  
 synchronized 를 이용한 방법을 테스트할 때 오류가 발생합니다.  
 
@@ -119,9 +132,60 @@ synchronized 를 이용한 방법을 테스트할 때 오류가 발생합니다.
 SynchronizedFacade 를 만들어서 한번 더 래핑해준다면  
 save() 메소드를 사용하는편이 더 좋을것 같습니다.  
 
+</details>
 </br>
+
+-------------
+
+### 3. Pessimistic Lock vs Optimistic Lock
+
+<details>
+<summary>접기/펼치기</summary>
+    
+충돌이 적은 경우 optimistic lock 이 빠르지만,  
+충돌이 많다면 pessimistic lock 이 더 빠르므로, 경우에 따라 다릅니다.  
+
+다만, 본인이 실제 서비스에 적용한다면 optimistic lock을 우선 고려 할 것 같습니다.  
+(pessimistic lock은 데드락을 고려해야 하므로)  
+
+</details>
 </br>
+
+<details>
+<summary>접기/펼치기</summary>
+
+https://github.com/cyh789/wanted-pre-onboarding-challenge-be-task-July/blob/main/1%EB%B2%88%20%EB%AC%B8%EC%A0%9C.md
+
+</details>
+
+-------------
+
+### 4. Facade? Helper?
+
+<details>
+<summary>접기/펼치기</summary>
+
+Facade는 내부 로직을 캡슐화하는 디자인 패턴.  
+사실 우리 구현사항에서 Facade에는 락을 얻는 행위만 있으므로 다른 패턴이 더 적합할 수 있지만, 구현이 매우 쉬워서 실무에서 자주 쓰는 편이다.
+
+</details>
 </br>
+
+-------------
+
+### 5.MySQL? Redis?
+
+<details>
+<summary>접기/펼치기</summary>
+    
+이미 MySQL 을 사용하고 있다면 별도의 비용 없이 사용가능하다.  
+어느 정도의 트래픽까지는 문제 없이 활용이 가능하다. 하지만 Redis 보다는 성능이 좋지 않다.  
+만약 현재 활용중인 Redis 가 없다면 별도의 구축비용과 인프라 관리비용이 발생한다. 하지만, MySQL 보다 성능이 좋다.
+
+</details>
+</br>
+
+-------------
 
 
 
