@@ -173,7 +173,7 @@ Facade는 내부 로직을 캡슐화하는 디자인 패턴.
 
 -------------
 
-### 5.MySQL? Redis?
+### 5. MySQL? Redis?
 
 <details>
 <summary>접기/펼치기</summary>
@@ -186,6 +186,120 @@ Facade는 내부 로직을 캡슐화하는 디자인 패턴.
 </br>
 
 -------------
+
+### 6. namedLock에서 @Transactional(Propagation.REQUIRES_NEW) 를 사용하는 이유가 무엇인가요?  
+
+<details>
+<summary>접기/펼치기</summary>
+
+부모의 트랜잭션과 동일한 범위로 묶인다면 Synchronized 와 같은 문제가 발생합니다.  
+Database 에 commit 되기전에 락이 풀리는 현상이 발생합니다.  
+
+</br>
+
+그렇기 때문에, 별도의 트랜잭션으로 분리를 해주어 Database 에 정상적으로 commit 이 된 이후에 락을 해제하는것을 의도하였습니다.  
+
+</br>
+
+핵심은 lock 을 해제하기전에 Database 에 commit 이 되도록 하는것입니다.  
+
+</details>
+</br>
+
+-------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</br>
+</br>
+
+-------------
+
+# 참고링크
+
+<details>
+<summary>접기/펼치기</summary>
+
+</br>
+
+##### 프로젝트 진행중 로직 및 이론 참고
+
+</br>
+
+https://github.com/Hyune-s-lab/manage-stock-concurrency 
+
+</br>
+
+https://dev-alxndr.tistory.com/45  
+https://github.com/dev-alxndr/concurrency-stock/blob/main/src/main/java/me/alxndr/conccurecystock/facade/RedissonLockStockFacade.java  
+
+</br>
+
+https://sigridjin.medium.com/weekly-java-%EA%B0%84%EB%8B%A8%ED%95%9C-%EC%9E%AC%EA%B3%A0-%EC%8B%9C%EC%8A%A4%ED%85%9C%EC%9C%BC%EB%A1%9C-%ED%95%99%EC%8A%B5%ED%95%98%EB%8A%94-%EB%8F%99%EC%8B%9C%EC%84%B1-%EC%9D%B4%EC%8A%88-9daa85155f66  
+</br>
+
+https://studyhardd.tistory.com/87
+
+</br>
+
+https://thalals.tistory.com/370  
+https://github.com/thalals/ConcurrencyIssue-lab  
+</br>
+
+https://velog.io/@coconenne/%EC%8A%A4%ED%94%84%EB%A7%81%EC%9C%BC%EB%A1%9C-%EC%95%8C%EC%95%84%EB%B3%B4%EB%8A%94-%EB%8F%99%EC%8B%9C%EC%84%B1-%EC%9D%B4%EC%8A%88  
+https://github.com/issiscv/concurrency-Issue-wtih-spring  
+
+</br>
+</br>
+
+##### JPA - Update(수정) 시 save() 메서드를 호출하는 것이 좋을까?  
+https://jaehoney.tistory.com/273  
+
+</br>
+
+##### namedLock에서 @Transactional(Propagation.REQUIRES_NEW) 를 사용하는 이유가 무엇인가요?  
+https://www.inflearn.com/questions/633358/propagation-requires-new-%EB%A5%BC-%EC%82%AC%EC%9A%A9%ED%95%98%EB%8A%94-%EC%9D%B4%EC%9C%A0%EA%B0%80-%EB%AC%B4%EC%97%87%EC%9D%B8%EA%B0%80%EC%9A%94  
+
+</br>
+
+##### 서비스 로직에서 @Transactional vs save() vs saveAndFlush() 질문입니다.  
+https://www.inflearn.com/questions/655574/%EC%84%9C%EB%B9%84%EC%8A%A4-%EB%A1%9C%EC%A7%81%EC%97%90%EC%84%9C-saveandflush-%EC%A7%88%EB%AC%B8%EC%9E%85%EB%8B%88%EB%8B%A4  
+
+</br>
+
+
+</details>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
